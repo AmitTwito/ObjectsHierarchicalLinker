@@ -6,31 +6,31 @@ using System.Threading.Tasks;
 
 namespace ObjectsHierarchicalLinker.BE
 {
-    public class ObjectModel
+    public class ObjectModel : IJsonConvertable
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public List<ObjectModel> Children { get; set; }
+        public int Id { get; }
+        public string Name { get; }
+        public int Parent { get; }
+        private List<ObjectModel> _children;
+
         public ObjectModel()
         {
-            this.Children = new List<ObjectModel>();
+            this._children = new List<ObjectModel>();
         }
-
 
         public void AddChild(ObjectModel item)
         {
-            this.Children.Add(item);
+            this._children.Add(item);
+        }
+
+        public string ToJson()
+        {
+            throw new NotImplementedException();
         }
 
         public void FromJson(string json)
         {
-
-
+            throw new NotImplementedException();
         }
-        public void ToJson(string json)
-        {
-
-        }
-
     }
 }

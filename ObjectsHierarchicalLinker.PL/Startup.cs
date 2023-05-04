@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ObjectsHierarchicalLinker.BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace ObjectsHierarchicalLinker.PL
         {
 
             services.AddControllers();
+            services.AddScoped<IObjectsBL, ObjectsBL>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ObjectRelationsLinker.PL", Version = "v1" });

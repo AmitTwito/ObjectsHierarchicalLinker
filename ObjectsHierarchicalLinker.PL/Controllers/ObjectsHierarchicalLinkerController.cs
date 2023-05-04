@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ObjectsHierarchicalLinker.BE;
+using ObjectsHierarchicalLinker.BL;
 using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,11 +11,17 @@ namespace ObjectsHierarchicalLinker.PL.Controllers
     [ApiController]
     public class ObjectsHierarchicalLinkerController : ControllerBase
     {
-        // GET: api/<ObjectsHierarchicalLinkerController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IObjectsBL _objectsBL;
+        public ObjectsHierarchicalLinkerController(IObjectsBL objectsBL)
         {
-            return new string[] { "value1", "value2" };
+            _objectsBL = objectsBL;
+        }
+
+        // GET: api/<ObjectsHierarchicalLinkerController>
+        [HttpPost]
+        public object SaveAndLink([FromBody] ObjectModel[] objectModels)
+        {
+            return this._objectsBL.SaveObjectsAndGetLinkedHeirarchy(objectModels);
         }
     }
 }
