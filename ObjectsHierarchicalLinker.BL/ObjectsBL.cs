@@ -3,7 +3,7 @@
 namespace ObjectsHierarchicalLinker.BL
 {
 
-    public class ObjectsBL
+    public class ObjectsBL : IObjectsBL
     {
 
     }
