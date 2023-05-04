@@ -10,8 +10,9 @@ namespace ObjectsHierarchicalLinker.DAL
 
     public interface IObjectsDAL
     {
-        List<ObjectModel> GetAllObjects();
-        void SaveObjects(ObjectModel[] objectModels);
-        Dictionary<int,List<ObjectModel>> GetParentsChildrenListDict();
+        List<ObjectEntity> GetAll();
+        void AddObjectEntity(ObjectEntity entity);
+        List<ObjectEntity> GetChildrenByParentId(int parentId);
+        void SaveAll(List<ObjectEntity> entities);
     }
 }

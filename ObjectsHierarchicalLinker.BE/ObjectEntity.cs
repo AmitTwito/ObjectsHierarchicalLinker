@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace ObjectsHierarchicalLinker.BE
 {
-    public class ObjectModel : IJsonConvertable
+    public class ObjectEntity : IJsonConvertable
     {
         public int Id { get; }
         public string Name { get; }
         public int Parent { get; }
-        private List<ObjectModel> _children;
+        private List<ObjectEntity> _children;
 
-        public ObjectModel()
+        public ObjectEntity()
         {
-            this._children = new List<ObjectModel>();
+            this._children = new List<ObjectEntity>();
         }
 
-        public void AddChild(ObjectModel item)
+        public void AddChild(ObjectEntity item)
         {
             this._children.Add(item);
         }

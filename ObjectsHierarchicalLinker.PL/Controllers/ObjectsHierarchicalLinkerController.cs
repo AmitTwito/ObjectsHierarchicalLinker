@@ -19,7 +19,7 @@ namespace ObjectsHierarchicalLinker.PL.Controllers
 
         // GET: api/<ObjectsHierarchicalLinkerController>
         [HttpPost]
-        public object SaveAndLink([FromBody] ObjectModel[] objectModels)
+        public object SaveAndLink([FromBody] ObjectEntity[] objectModels)
         {
             return this._objectsBL.SaveObjectsAndGetLinkedHeirarchy(objectModels);
         }

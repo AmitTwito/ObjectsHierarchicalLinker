@@ -9,46 +9,52 @@ namespace ObjectsHierarchicalLinker.DAL
 {
     public class ObjectsDAL : IObjectsDAL
     {
-        private List<ObjectModel> _objectModels;
-        private Dictionary<int, List<ObjectModel>> _parentsIndex;
+        private List<ObjectEntity> _objectEntities;
+        private Dictionary<int, List<ObjectEntity>> _parentsIndex;
         public ObjectsDAL()
         {
-            this._objectModels = new List<ObjectModel>();
-            this._parentsIndex = new Dictionary<int, List<ObjectModel>>();
+            this._objectEntities = new List<ObjectEntity>();
+            this._parentsIndex = new Dictionary<int, List<ObjectEntity>>();
         }
 
-        public List<ObjectModel> GetAllObjects()
+        public List<ObjectEntity> GetAll()
         {
-            return this._objectModels;
+            return this._objectEntities;
         }
 
-        public Dictionary<int, List<ObjectModel>> GetParentsChildrenListDict()
+        public List<ObjectEntity> GetChildrenByParentId(int parentId)
         {
-            return new Dictionary<int, List<ObjectModel>>(_parentsIndex);
+            return this._parentsIndex[parentId];
         }
 
-        public void SaveObjects(ObjectModel[] objectModels)
+        public void AddObjectEntity(ObjectEntity entity)
         {
-            this._objectModels = objectModels.ToList();
-            var parentsIds = this._objectModels.Select(x=> x.Parent).ToList();
-            foreach (var id in parentsIds)
-            {
-                this._parentsIndex[id] = new List<ObjectModel>();
-            }
-
-            foreach (ObjectModel objectModel in objectModels)
-            {
-                this._parentsIndex[objectModel.Parent].Add(objectModel);
-            }
+            this._objectEntities.Add(entity);
+            addEntityToDict(entity);
         }
 
-        public void SaveNewObject(ObjectModel newObject)
+        public void SaveAll(List<ObjectEntity> entities)
         {
-            this._objectModels.Add(newObject);
-            if (this._parentsIndex.ContainsKey(newObject.Parent))
-                this._parentsIndex[newObject.Parent].Add(newObject);
+            clearData();
+            entities.ToList().ForEach(e => this.AddObjectEntity(e));
+        }
+
+        private void clearData()
+        {
+            this._objectEntities.Clear();
+            this._parentsIndex.Clear();
+        }
+
+
+        private void addEntityToDict(ObjectEntity entity)
+        {
+            var parentId = entity.Parent;
+            if (parentId == -1)
+                return;
+            if (!this._parentsIndex.ContainsKey(entity.Parent))
+                this._parentsIndex[entity.Parent] = new List<ObjectEntity>();
             else
-                this._parentsIndex[newObject.Parent] = new List<ObjectModel>();
+                this._parentsIndex[entity.Parent].Add(entity);
         }
     }
 }

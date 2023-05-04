@@ -1,7 +1,7 @@
 ﻿using ObjectsHierarchicalLinker.BE;
 using ObjectsHierarchicalLinker.DAL;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
+using System.Linq;
 
 namespace ObjectsHierarchicalLinker.BL
 {
@@ -14,33 +14,31 @@ namespace ObjectsHierarchicalLinker.BL
             _objectsDAL = objectsDAL;
         }
 
-        public List<ObjectModel> GetAllObjects()
+        public List<ObjectEntity> GetAllObjects()
         {
-            return this._objectsDAL.GetAllObjects();
+            return this._objectsDAL.GetAll();
         }
 
-        public List<ObjectModel> SaveObjectsAndGetLinkedHeirarchy(ObjectModel[] objectModels)
+        public List<ObjectEntity> SaveObjectsAndGetLinkedHeirarchy(ObjectEntity[] objectEntities)
         {
-            this._objectsDAL.SaveObjects(objectModels);
+            this._objectsDAL.SaveAll(objectEntities.ToList());
 
-            return getLinkedHeirarchy();
+            return getLinkedHeirarchyCollection();
         }
 
-
-        private List<ObjectModel> getLinkedHeirarchy()
+        private List<ObjectEntity> getLinkedHeirarchyCollection()
         {
-            var objects = this._objectsDAL.GetAllObjects();
-            var parentsToChildrenDict = this._objectsDAL.GetParentsChildrenListDict();
-            var resultObjects = new List<ObjectModel>();
+            var objectEntities = this._objectsDAL.GetAll();
+            var resultObjects = new List<ObjectEntity>();
 
-            foreach (var objectModel in objects)
+            foreach (var objectEntity in objectEntities)
             {
-
-                
-
-                if (objectModel.Parent == -1) 
-                    resultObjects.Add(objectModel);
-
+                var objectId = objectEntity.Id;
+                var children = this._objectsDAL.GetChildrenByParentId(objectId);
+                foreach (var child in children)
+                    objectEntity.AddChild(child);
+                if (objectEntity.Parent == -1)
+                    resultObjects.Add(objectEntity);
             }
 
             return resultObjects;
