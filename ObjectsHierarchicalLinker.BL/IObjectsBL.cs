@@ -5,9 +5,9 @@ namespace ObjectsHierarchicalLinker.BL
 {
     public interface IObjectsBL
     {
-        List<ObjectEntity> SaveObjectsAndGetLinkedHeirarchy(ObjectEntity[] objectEntities);
-
         List<ObjectEntity> GetAllObjects();
-
+        List<ObjectEntity> ParseInputAndGetObjectEntities(ObjectEntity[] objectModels);
+        void SaveObjectEntities(List<ObjectEntity> objectEntities);
+        ObjectsHierarchy CreateAndGetHeirarchy();
     }
 }

@@ -2,11 +2,13 @@
 using ObjectsHierarchicalLinker.BE;
 using ObjectsHierarchicalLinker.BL;
 using System.Collections.Generic;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Threading.Tasks;
 
 namespace ObjectsHierarchicalLinker.PL.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class ObjectsHierarchicalLinkerController : ControllerBase
@@ -19,9 +21,16 @@ namespace ObjectsHierarchicalLinker.PL.Controllers
 
         // GET: api/<ObjectsHierarchicalLinkerController>
         [HttpPost]
-        public object SaveAndLink([FromBody] ObjectEntity[] objectModels)
+        async public Task<object> ParseAndCreateHierarchy([FromBody] ObjectEntity[] objects)
         {
-            return this._objectsBL.SaveObjectsAndGetLinkedHeirarchy(objectModels);
+            // List<ObjectEntity> objectsEntities = this._objectsBL.ParseInputAndGetObjectEntities(objects);
+            var hierarchy = await Task.Run(() =>
+            {
+                this._objectsBL.SaveObjectEntities(objects.ToList());
+                return this._objectsBL.CreateAndGetHeirarchy();
+            });
+
+            return Ok(hierarchy.ToJsonObject());
         }
     }
 }

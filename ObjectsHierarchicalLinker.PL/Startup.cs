@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ObjectsHierarchicalLinker.BL;
+using ObjectsHierarchicalLinker.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace ObjectsHierarchicalLinker.PL
         {
 
             services.AddControllers();
+            services.AddScoped<IObjectsDAL, ObjectsDAL>();
             services.AddScoped<IObjectsBL, ObjectsBL>();
 
             services.AddSwaggerGen(c =>

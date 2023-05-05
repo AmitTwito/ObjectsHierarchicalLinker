@@ -14,37 +14,37 @@ namespace ObjectsHierarchicalLinker.BL
             _objectsDAL = objectsDAL;
         }
 
+        public ObjectsHierarchy CreateAndGetHeirarchy()
+        {
+            var objectEntities = this._objectsDAL.GetAll();
+            var objectHierarchy = new ObjectsHierarchy();
+
+            foreach (var objectEntity in objectEntities)
+            {
+                var children = this._objectsDAL.GetChildrenByParentId(objectEntity.Id);
+                foreach (var child in children)
+                    objectEntity.AddChild(child);
+                if (objectEntity.Parent == -1)
+                    objectHierarchy.Add(objectEntity);
+            }
+
+            return objectHierarchy;
+        }
+
         public List<ObjectEntity> GetAllObjects()
         {
             return this._objectsDAL.GetAll();
         }
 
-        public List<ObjectEntity> SaveObjectsAndGetLinkedHeirarchy(ObjectEntity[] objectEntities)
+        public List<ObjectEntity> ParseInputAndGetObjectEntities(ObjectEntity[] objectModels)
         {
-            this._objectsDAL.SaveAll(objectEntities.ToList());
-
-            return getLinkedHeirarchyCollection();
+            var entities = this._objectsDAL.GetAll();
+            return entities;
         }
 
-        private List<ObjectEntity> getLinkedHeirarchyCollection()
+        public void SaveObjectEntities(List<ObjectEntity> objectEntities)
         {
-            var objectEntities = this._objectsDAL.GetAll();
-            var resultObjects = new List<ObjectEntity>();
-
-            foreach (var objectEntity in objectEntities)
-            {
-                var objectId = objectEntity.Id;
-                var children = this._objectsDAL.GetChildrenByParentId(objectId);
-                foreach (var child in children)
-                    objectEntity.AddChild(child);
-                if (objectEntity.Parent == -1)
-                    resultObjects.Add(objectEntity);
-            }
-
-            return resultObjects;
+            this._objectsDAL.SaveAll(objectEntities);
         }
-
-
-
     }
 }

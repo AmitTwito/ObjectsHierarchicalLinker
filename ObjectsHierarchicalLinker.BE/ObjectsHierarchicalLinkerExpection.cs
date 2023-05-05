@@ -8,9 +8,9 @@ namespace ObjectsHierarchicalLinker.BE
 {
     public enum ObjectsHierarchicalLinkerExpectionType
     {
-        SqlException,
-        NotFoundException,
+        DALException,
         BadRequestException,
+        InputValidationException,
         ServerError
     }
 

@@ -9,13 +9,8 @@ namespace ObjectsHierarchicalLinker.DAL
 {
     public class ObjectsDAL : IObjectsDAL
     {
-        private List<ObjectEntity> _objectEntities;
-        private Dictionary<int, List<ObjectEntity>> _parentsIndex;
-        public ObjectsDAL()
-        {
-            this._objectEntities = new List<ObjectEntity>();
-            this._parentsIndex = new Dictionary<int, List<ObjectEntity>>();
-        }
+        private List<ObjectEntity> _objectEntities = new();
+        private Dictionary<int, List<ObjectEntity>> _parentsIndex = new();
 
         public List<ObjectEntity> GetAll()
         {
@@ -23,8 +18,11 @@ namespace ObjectsHierarchicalLinker.DAL
         }
 
         public List<ObjectEntity> GetChildrenByParentId(int parentId)
-        {
-            return this._parentsIndex[parentId];
+        {   
+            if (this._parentsIndex.ContainsKey(parentId))
+                return this._parentsIndex[parentId];
+            else
+                return new List<ObjectEntity>();
         }
 
         public void AddObjectEntity(ObjectEntity entity)
@@ -36,7 +34,10 @@ namespace ObjectsHierarchicalLinker.DAL
         public void SaveAll(List<ObjectEntity> entities)
         {
             clearData();
-            entities.ToList().ForEach(e => this.AddObjectEntity(e));
+            foreach (ObjectEntity entity in entities)
+            {
+                AddObjectEntity(entity);
+            }
         }
 
         private void clearData()
@@ -48,13 +49,13 @@ namespace ObjectsHierarchicalLinker.DAL
 
         private void addEntityToDict(ObjectEntity entity)
         {
-            var parentId = entity.Parent;
+            var parentId = (int)entity.Parent;
             if (parentId == -1)
                 return;
-            if (!this._parentsIndex.ContainsKey(entity.Parent))
-                this._parentsIndex[entity.Parent] = new List<ObjectEntity>();
-            else
-                this._parentsIndex[entity.Parent].Add(entity);
+            if (!this._parentsIndex.ContainsKey(parentId))
+                this._parentsIndex[parentId] = new List<ObjectEntity>();
+            
+            this._parentsIndex[parentId].Add(entity);
         }
     }
 }

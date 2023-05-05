@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace ObjectsHierarchicalLinker.BE
 {
-    public interface IJsonConvertable
-    { 
-    
-        void FromJson(string json);
-        string ToJson();
+    public interface IJsonObjectConvertable
+    {
+        object ToJsonObject();
     }
 }

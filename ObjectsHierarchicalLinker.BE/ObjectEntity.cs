@@ -1,36 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ObjectsHierarchicalLinker.BE
 {
-    public class ObjectEntity : IJsonConvertable
+    public class ObjectEntity : IJsonObjectConvertable
     {
-        public int Id { get; }
-        public string Name { get; }
-        public int Parent { get; }
-        private List<ObjectEntity> _children;
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        private int _parent;
+        public int? Parent
+        {
+            get
+            {
+                return _parent;
+            }
+            set { _parent = value == null ? -1 : value.Value; }
+        }
+
+        public List<ObjectEntity> Childs { get; }
 
         public ObjectEntity()
         {
-            this._children = new List<ObjectEntity>();
+            Childs = new List<ObjectEntity>();
+        }
+        public void AddChild(ObjectEntity child)
+        {
+            if (child.Parent == Id)
+                this.Childs.Add(child);
+            //else
         }
 
-        public void AddChild(ObjectEntity item)
+        // Tried to implement casting
+        public object ToJsonObject()
         {
-            this._children.Add(item);
+
+            var childObjects = new object[Childs.Count];
+            for (int i = 0; i < Childs.Count; i++)
+                childObjects[i] = Childs[i].ToJsonObject();
+            return new { id = Id, name = Name, childs = childObjects.ToArray() };
         }
 
-        public string ToJson()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FromJson(string json)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
