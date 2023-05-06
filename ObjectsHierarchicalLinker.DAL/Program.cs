@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ObjectsHierarchicalLinker.DAL
+namespace ObjectsHierarchyCreator.DAL
 {
     internal class Program
     {

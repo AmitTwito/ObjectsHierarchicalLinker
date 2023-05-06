@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ObjectsHierarchicalLinker.PL
+namespace ObjectsHierarchyCreator.PL
 {
     public class Program
     {
@@ -17,7 +18,18 @@ namespace ObjectsHierarchicalLinker.PL
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
+
             Host.CreateDefaultBuilder(args)
+                 .ConfigureLogging(loggingBuilder =>
+                 {
+                     loggingBuilder.ClearProviders();
+                     loggingBuilder
+                     .AddSimpleConsole(options =>
+                     {
+                         options.TimestampFormat = "yyyy-MM-dd HH:mm:ss ";
+                     })
+                         .AddDebug();
+                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

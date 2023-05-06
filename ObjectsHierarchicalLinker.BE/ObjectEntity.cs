@@ -4,46 +4,85 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Immutable;
+using System.Linq.Expressions;
 
-namespace ObjectsHierarchicalLinker.BE
+namespace ObjectsHierarchyCreator.BE
 {
-    public class ObjectEntity : IJsonObjectConvertable
+    public class ObjectEntity
     {
-        public int Id { get; set; }
+
+        public static readonly int NoParentIdValue = 0;
+
+        private int _id;
+
+        [JsonPropertyName("id")]
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (value < 1)
+                    throw new InvalidInputException($"Invalid id {value}. The value of id needs to be at least 1.");
+                _id = value;
+            }
+        }
+
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        private int _parent;
-        public int? Parent
+        private int _parentId;
+
+        [JsonPropertyName("parent")]
+        public int? ParentId
         {
             get
             {
-                return _parent;
+                return _parentId;
             }
-            set { _parent = value == null ? -1 : value.Value; }
+            set
+            {
+                _parentId = value == null || value == Id ? NoParentIdValue : value.Value;
+                if (_parentId < NoParentIdValue)
+                    throw new InvalidInputException($"Invalid parent {value}. The value of parent needs to be at least 1, or null for indicating no parent.");
+            }
         }
 
-        public List<ObjectEntity> Childs { get; }
 
-        public ObjectEntity()
-        {
-            Childs = new List<ObjectEntity>();
-        }
-        public void AddChild(ObjectEntity child)
-        {
-            if (child.Parent == Id)
-                this.Childs.Add(child);
-            //else
-        }
-
-        // Tried to implement casting
-        public object ToJsonObject()
+        public HierarchyObject AsHierarchyObject()
         {
 
-            var childObjects = new object[Childs.Count];
-            for (int i = 0; i < Childs.Count; i++)
-                childObjects[i] = Childs[i].ToJsonObject();
-            return new { id = Id, name = Name, childs = childObjects.ToArray() };
+            return new HierarchyObject() { Id = this.Id, Name = this.Name };
         }
 
+
+    }
+
+    public class ObjectEntitiesConverter : JsonConverter<List<ObjectEntity>>
+    {
+        public override List<ObjectEntity> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+
+            try
+            {
+                var res = JsonSerializer.Deserialize<List<ObjectEntity>>(ref reader);
+
+                return res;
+            }
+            catch (JsonException e)
+            {
+                throw new InvalidInputException(e.Message);
+            }
+
+
+        }
+
+        public override void Write(Utf8JsonWriter writer, List<ObjectEntity> value, JsonSerializerOptions options)
+        {
+            JsonSerializer.Serialize(writer, value, options);
+        }
     }
 }

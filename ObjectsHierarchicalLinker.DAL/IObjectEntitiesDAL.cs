@@ -1,14 +1,14 @@
-﻿using ObjectsHierarchicalLinker.BE;
+﻿using ObjectsHierarchyCreator.BE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ObjectsHierarchicalLinker.DAL
+namespace ObjectsHierarchyCreator.DAL
 {
 
-    public interface IObjectsDAL
+    public interface IObjectEntitiesDAL
     {
         List<ObjectEntity> GetAll();
         void AddObjectEntity(ObjectEntity entity);

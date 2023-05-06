@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectsHierarchicalLinker.BE", "ObjectsHierarchicalLinker.BE\ObjectsHierarchicalLinker.BE.csproj", "{37248B6F-6FA8-4A55-8100-1E0FA9AF5A64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectsHierarchyCreator.BE", "ObjectsHierarchicalLinker.BE\ObjectsHierarchyCreator.BE.csproj", "{37248B6F-6FA8-4A55-8100-1E0FA9AF5A64}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectsHierarchicalLinker.DAL", "ObjectsHierarchicalLinker.DAL\ObjectsHierarchicalLinker.DAL.csproj", "{5F88FD71-D791-4477-9308-5CED64DD9661}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectsHierarchyCreator.DAL", "ObjectsHierarchicalLinker.DAL\ObjectsHierarchyCreator.DAL.csproj", "{5F88FD71-D791-4477-9308-5CED64DD9661}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectsHierarchicalLinker.PL", "ObjectsHierarchicalLinker.PL\ObjectsHierarchicalLinker.PL.csproj", "{C4F09AAA-B372-4D7D-B0F9-AC63D2B06302}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectsHierarchyCreator.PL", "ObjectsHierarchicalLinker.PL\ObjectsHierarchyCreator.PL.csproj", "{C4F09AAA-B372-4D7D-B0F9-AC63D2B06302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectsHierarchicalLinker.BL", "ObjectsHierarchicalLinker.BL\ObjectsHierarchicalLinker.BL.csproj", "{1C0E2DCD-6FD0-47AC-898A-4EDE9D05305E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectsHierarchyCreator.BL", "ObjectsHierarchicalLinker.BL\ObjectsHierarchyCreator.BL.csproj", "{1C0E2DCD-6FD0-47AC-898A-4EDE9D05305E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

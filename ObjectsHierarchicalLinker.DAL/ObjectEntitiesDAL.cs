@@ -1,13 +1,13 @@
-﻿using ObjectsHierarchicalLinker.BE;
+﻿using ObjectsHierarchyCreator.BE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ObjectsHierarchicalLinker.DAL
+namespace ObjectsHierarchyCreator.DAL
 {
-    public class ObjectsDAL : IObjectsDAL
+    public class ObjectEntitiesDAL : IObjectEntitiesDAL
     {
         private List<ObjectEntity> _objectEntities = new();
         private Dictionary<int, List<ObjectEntity>> _parentsIndex = new();
@@ -18,43 +18,42 @@ namespace ObjectsHierarchicalLinker.DAL
         }
 
         public List<ObjectEntity> GetChildrenByParentId(int parentId)
-        {   
+        {
             if (this._parentsIndex.ContainsKey(parentId))
                 return this._parentsIndex[parentId];
             else
                 return new List<ObjectEntity>();
         }
 
-        public void AddObjectEntity(ObjectEntity entity)
-        {
-            this._objectEntities.Add(entity);
-            addEntityToDict(entity);
-        }
-
         public void SaveAll(List<ObjectEntity> entities)
         {
-            clearData();
+            ClearData();
             foreach (ObjectEntity entity in entities)
             {
                 AddObjectEntity(entity);
             }
         }
 
-        private void clearData()
+        public void AddObjectEntity(ObjectEntity entity)
+        {
+            this._objectEntities.Add(entity);
+            AddEntityToIndexDict(entity);
+        }
+
+        private void ClearData()
         {
             this._objectEntities.Clear();
             this._parentsIndex.Clear();
         }
 
-
-        private void addEntityToDict(ObjectEntity entity)
+        private void AddEntityToIndexDict(ObjectEntity entity)
         {
-            var parentId = (int)entity.Parent;
-            if (parentId == -1)
+            var parentId = (int)entity.ParentId;
+            if (parentId == ObjectEntity.NoParentIdValue)
                 return;
             if (!this._parentsIndex.ContainsKey(parentId))
                 this._parentsIndex[parentId] = new List<ObjectEntity>();
-            
+
             this._parentsIndex[parentId].Add(entity);
         }
     }

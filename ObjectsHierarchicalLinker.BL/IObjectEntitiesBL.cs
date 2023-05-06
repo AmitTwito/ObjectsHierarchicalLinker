@@ -1,12 +1,12 @@
-﻿using ObjectsHierarchicalLinker.BE;
+﻿using ObjectsHierarchyCreator.BE;
 using System.Collections.Generic;
 
-namespace ObjectsHierarchicalLinker.BL
+namespace ObjectsHierarchyCreator.BL
 {
-    public interface IObjectsBL
+    public interface IObjectEntitiesBL
     {
         List<ObjectEntity> GetAllObjects();
-        List<ObjectEntity> ParseInputAndGetObjectEntities(ObjectEntity[] objectModels);
+        List<ObjectEntity> ValidateInput(List<ObjectEntity> objectEntities);
         void SaveObjectEntities(List<ObjectEntity> objectEntities);
         ObjectsHierarchy CreateAndGetHeirarchy();
     }

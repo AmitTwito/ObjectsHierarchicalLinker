@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ObjectsHierarchicalLinker.BL
+namespace ObjectsHierarchyCreator.BL
 {
     internal class Program
     {

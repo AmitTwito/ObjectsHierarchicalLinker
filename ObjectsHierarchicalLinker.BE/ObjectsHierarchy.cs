@@ -2,34 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ObjectsHierarchicalLinker.BE
+namespace ObjectsHierarchyCreator.BE
 {
-    public class ObjectsHierarchy : IJsonObjectConvertable
-    {
-        public List<ObjectEntity> _parents = new();
-        public List<ObjectEntity> Parents
+    public class ObjectsHierarchy
+    {   
+
+
+        public List<HierarchyObject> Objects { get; }
+
+        public ObjectsHierarchy()
         {
-            get
-            {
-                return new(_parents);
-            }
+            Objects = new List<HierarchyObject>();
         }
 
-        public void Add(ObjectEntity objectEntity)
+        public void AddObject(HierarchyObject hierarchyObject)
         {
-            this._parents.Add(objectEntity);
+            this.Objects.Add(hierarchyObject);
+        }
+        public string ToJsonString()
+        {
+            var options = new JsonSerializerOptions();
+            options.WriteIndented = true;
+            return JsonSerializer.Serialize(this, options);
         }
 
-        // Tried to implement casting operator
-        public object ToJsonObject()
-        {
-            var parents = new object[this._parents.Count];
-
-            for (int i = 0; i < _parents.Count; i++)
-                parents[i] = this._parents[i].ToJsonObject();
-            return parents;
-        }
     }
 }
