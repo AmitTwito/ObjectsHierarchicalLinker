@@ -29,7 +29,7 @@ namespace ObjectsHierarchyCreator.PL.Controllers
 
         // GET: api/<ObjectsHierarchicalLinkerController>
         [HttpPost]
-        [ProducesResponseType(typeof(List<ObjectsHierarchy>), 200)]
+        [ProducesResponseType(typeof(List<HierarchyObject>), 200)]
         [ProducesResponseType(typeof(ErrorMessage), 400)]
         [ProducesResponseType(typeof(ErrorMessage), 500)]
         async public Task<ActionResult> SaveDataAndCreateHierarchy([FromBody] List<ObjectEntity> objects)
@@ -42,7 +42,7 @@ namespace ObjectsHierarchyCreator.PL.Controllers
                 {
                     var entities = _objectEntitiesBL.ValidateInput(objects);
                     this._objectEntitiesBL.SaveObjectEntities(entities);
-                    return this._objectEntitiesBL.CreateAndGetHeirarchy();
+                    return this._objectEntitiesBL.CreateAndGetHierarchy();
                 });
 
                 _logger.LogInformation($"Successfully created the objects hierarchy, sending response: \n{hierarchy.ToJsonString()},");
@@ -53,9 +53,12 @@ namespace ObjectsHierarchyCreator.PL.Controllers
             {
                 return LogErrorAndSendResponseByStatusCode("Error while checking the input", e, StatusCodes.Status400BadRequest);
             }
+            catch (DALException e)
+            {
+                return LogErrorAndSendResponseByStatusCode("Error while doing a data access operation", e, StatusCodes.Status500InternalServerError);
+            }
             catch (Exception e)
             {
-
                 return LogErrorAndSendResponseByStatusCode("An error occurred while creating the objects hierarchy", e, StatusCodes.Status500InternalServerError);
             }
 

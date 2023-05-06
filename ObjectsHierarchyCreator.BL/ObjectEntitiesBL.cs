@@ -14,12 +14,12 @@ namespace ObjectsHierarchyCreator.BL
             _objectEntitiesDAL = objectsDAL;
         }
 
-        public ObjectsHierarchy CreateAndGetHeirarchy()
+        public ObjectsHierarchy CreateAndGetHierarchy()
         {
             var objectEntities = this._objectEntitiesDAL.GetAll();
 
             var idToHierarchyObject = new Dictionary<int, HierarchyObject>();
-            objectEntities.ForEach(e => { idToHierarchyObject.Add(e.Id, e.AsHierarchyObject()); });
+            objectEntities.ForEach(entity => { idToHierarchyObject.Add(entity.Id, entity.AsHierarchyObject()); });
 
             var objectHierarchy = new ObjectsHierarchy();
 

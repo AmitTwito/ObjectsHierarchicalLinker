@@ -11,7 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ObjectsHierarchicalLinker.BL\ObjectsHierarchyCreator.BL.csproj" />
+    <ProjectReference Include="..\ObjectsHierarchyCreator.BE\ObjectsHierarchyCreator.BE.csproj" />
+    <ProjectReference Include="..\ObjectsHierarchyCreator.BL\ObjectsHierarchyCreator.BL.csproj" />
   </ItemGroup>
 
 </Project>

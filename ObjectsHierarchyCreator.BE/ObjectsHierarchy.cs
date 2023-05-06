@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 namespace ObjectsHierarchyCreator.BE
 {
     public class ObjectsHierarchy
-    {   
-
-
+    {
         public List<HierarchyObject> Objects { get; }
 
         public ObjectsHierarchy()

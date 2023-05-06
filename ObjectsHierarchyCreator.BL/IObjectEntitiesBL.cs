@@ -8,6 +8,6 @@ namespace ObjectsHierarchyCreator.BL
         List<ObjectEntity> GetAllObjects();
         List<ObjectEntity> ValidateInput(List<ObjectEntity> objectEntities);
         void SaveObjectEntities(List<ObjectEntity> objectEntities);
-        ObjectsHierarchy CreateAndGetHeirarchy();
+        ObjectsHierarchy CreateAndGetHierarchy();
     }
 }

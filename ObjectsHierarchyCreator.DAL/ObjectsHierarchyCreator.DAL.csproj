@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ObjectsHierarchicalLinker.BE\ObjectsHierarchyCreator.BE.csproj" />
+    <ProjectReference Include="..\ObjectsHierarchyCreator.BE\ObjectsHierarchyCreator.BE.csproj" />
   </ItemGroup>
 
 </Project>
