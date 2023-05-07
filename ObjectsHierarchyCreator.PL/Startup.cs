@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ObjectsHierarchyCreator.BE;
 using Microsoft.Extensions.Logging.Console;
+using ObjectsHierarchyCreator.BE.Utils;
 
 namespace ObjectsHierarchyCreator.PL
 {
@@ -23,6 +24,7 @@ namespace ObjectsHierarchyCreator.PL
     {
         public Startup(IConfiguration configuration)
         {
+
             Configuration = configuration;
         }
 
@@ -38,12 +40,37 @@ namespace ObjectsHierarchyCreator.PL
                  options.JsonSerializerOptions.Converters.Add(new ObjectEntitiesConverter());
              });
 
-            services.AddScoped<IObjectEntitiesDAL, ObjectEntitiesDAL>();
-            services.AddScoped<IObjectEntitiesBL, ObjectEntitiesBL>();
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                var Key = Encoding.UTF8.GetBytes(Configuration["JWT:Key"]);
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                   
+                    IssuerSigningKey = new SymmetricSecurityKey(Key)
+                };
+            });
+
+            services.AddOptions();
+
+
+            services.AddSingleton<IAccessControlRepository, AccessControlRepository>();
+            services.AddSingleton<IAccessControlService, AccessControlService>();
+            services.AddSingleton<IObjectEntitiesRepository, ObjectEntitiesRepository>();
+            services.AddScoped<IObjectEntitiesService, ObjectEntitiesService>();
+            services.Configure<AppConfig>(Configuration.GetSection("AppConfig"));
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ObjectRelationsLinker", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ObjectsHierarchyCreator", Version = "v1" });
             });
         }
 
@@ -56,13 +83,14 @@ namespace ObjectsHierarchyCreator.PL
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ObjectRelationsLinker v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ObjectsHierarchyCreator v1"));
             }
 
             app.UseMiddleware<JsonSerializationMiddleware>();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -71,7 +99,7 @@ namespace ObjectsHierarchyCreator.PL
             });
         }
 
-       
+
 
     }
 }

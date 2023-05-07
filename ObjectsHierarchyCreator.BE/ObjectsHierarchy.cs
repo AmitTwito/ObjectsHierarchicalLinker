@@ -5,8 +5,13 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+
+
 namespace ObjectsHierarchyCreator.BE
 {
+/*
+ Represents the hierarchy of the objects.
+ */
     public class ObjectsHierarchy
     {
         public List<HierarchyObject> Objects { get; }
@@ -24,7 +29,7 @@ namespace ObjectsHierarchyCreator.BE
         {
             var options = new JsonSerializerOptions();
             options.WriteIndented = true;
-            return JsonSerializer.Serialize(this, options);
+            return JsonSerializer.Serialize(Objects, options);
         }
 
     }

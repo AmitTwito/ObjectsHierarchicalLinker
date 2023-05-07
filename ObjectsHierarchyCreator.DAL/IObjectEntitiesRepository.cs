@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ObjectsHierarchyCreator.DAL
 {
 
-    public interface IObjectEntitiesDAL
+    public interface IObjectEntitiesRepository
     {
         List<ObjectEntity> GetAll();
         void AddObjectEntity(ObjectEntity entity);

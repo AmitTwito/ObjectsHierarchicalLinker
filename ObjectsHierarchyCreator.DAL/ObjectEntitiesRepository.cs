@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ObjectsHierarchyCreator.DAL
 {
-    public class ObjectEntitiesDAL : IObjectEntitiesDAL
+    public class ObjectEntitiesRepository : IObjectEntitiesRepository
     {
         private List<ObjectEntity> _objectEntities = new();
         private Dictionary<int, List<ObjectEntity>> _parentsIndex = new();
@@ -19,10 +19,17 @@ namespace ObjectsHierarchyCreator.DAL
 
         public List<ObjectEntity> GetChildrenByParentId(int parentId)
         {
-            if (this._parentsIndex.ContainsKey(parentId))
-                return this._parentsIndex[parentId];
-            else
-                return new List<ObjectEntity>();
+            try
+            {
+                if (this._parentsIndex.ContainsKey(parentId))
+                    return this._parentsIndex[parentId];
+                else
+                    return new List<ObjectEntity>();
+            }
+            catch (Exception ex)
+            {
+                throw new DALException($"Error at GetChildrenByParentId - {ex.Message}");
+            }
         }
 
         public void SaveAll(List<ObjectEntity> entities)
@@ -36,14 +43,29 @@ namespace ObjectsHierarchyCreator.DAL
 
         public void AddObjectEntity(ObjectEntity entity)
         {
-            this._objectEntities.Add(entity);
-            AddEntityToIndexDict(entity);
+            try
+            {
+                this._objectEntities.Add(entity);
+                AddEntityToIndexDict(entity);
+            }
+            catch (Exception ex)
+            {
+                throw new DALException($"Error at AddObjectEntity. Object ID: {entity.Id} - {ex.Message}");
+            }
         }
 
         private void ClearData()
         {
-            this._objectEntities.Clear();
-            this._parentsIndex.Clear();
+            try 
+            {
+                this._objectEntities.Clear();
+                this._parentsIndex.Clear();
+            }
+            catch (Exception ex)
+            {
+                throw new DALException($"Error at ClearData - {ex.Message}");
+            }
+            
         }
 
         private void AddEntityToIndexDict(ObjectEntity entity)

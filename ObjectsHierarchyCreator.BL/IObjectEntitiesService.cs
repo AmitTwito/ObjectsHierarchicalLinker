@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ObjectsHierarchyCreator.BL
 {
-    public interface IObjectEntitiesBL
+    public interface IObjectEntitiesService
     {
         List<ObjectEntity> GetAllObjects();
         List<ObjectEntity> ValidateInput(List<ObjectEntity> objectEntities);

@@ -14,27 +14,21 @@ namespace ObjectsHierarchyCreator.BE
             : base(message)
         {
         }
-
     }
 
     public class InvalidInputException : ObjectsHierarchyCreatorException
     {
-
         public InvalidInputException(string message)
             : base($"Invalid input: {message}")
         {
-
         }
     }
 
-
     public class DALException : ObjectsHierarchyCreatorException
     {
-
         public DALException(string message)
             : base($"Data access layer error: {message}")
         {
-
         }
     }
 

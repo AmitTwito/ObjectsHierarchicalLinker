@@ -18,12 +18,12 @@ namespace ObjectsHierarchyCreator.PL.Controllers
     [ApiController]
     public class ObjectsHierarchyCreatorController : ControllerBase
     {
-        private readonly IObjectEntitiesBL _objectEntitiesBL;
+        private readonly IObjectEntitiesService _objectEntitiesService;
         private readonly ILogger<ObjectsHierarchyCreatorController> _logger;
 
-        public ObjectsHierarchyCreatorController(IObjectEntitiesBL objectsBL, ILogger<ObjectsHierarchyCreatorController> logger)
+        public ObjectsHierarchyCreatorController(IObjectEntitiesService objectEntitiesService, ILogger<ObjectsHierarchyCreatorController> logger)
         {
-            _objectEntitiesBL = objectsBL;
+            _objectEntitiesService = objectEntitiesService;
             _logger = logger;
         }
 
@@ -37,20 +37,24 @@ namespace ObjectsHierarchyCreator.PL.Controllers
             try
             {
                 _logger.LogInformation("Started creating the objects hierarchy...");
-
+                if(objects.Count == 0)
+                {
+                    _logger.LogWarning($"There are no objects in the hierarchy. Sending response: []");
+                    return Ok(new List<HierarchyObject>());
+                }
                 var hierarchy = await Task.Run(() =>
                 {
-                    var entities = _objectEntitiesBL.ValidateInput(objects);
-                    this._objectEntitiesBL.SaveObjectEntities(entities);
-                    return this._objectEntitiesBL.CreateAndGetHierarchy();
+                    var entities = _objectEntitiesService.ValidateInput(objects);
+                    this._objectEntitiesService.SaveObjectEntities(entities);
+                    return this._objectEntitiesService.CreateAndGetHierarchy();
                 });
 
-                _logger.LogInformation($"Successfully created the objects hierarchy, sending response: \n{hierarchy.ToJsonString()},");
+                _logger.LogInformation($"Successfully created the objects hierarchy, sending response: \n{hierarchy.ToJsonString()}");
                 return Ok(hierarchy.Objects);
             }
-
             catch (InvalidInputException e)
             {
+                _logger.LogError("Error while checking the input");
                 return LogErrorAndSendResponseByStatusCode("Error while checking the input", e, StatusCodes.Status400BadRequest);
             }
             catch (DALException e)
@@ -66,7 +70,7 @@ namespace ObjectsHierarchyCreator.PL.Controllers
 
         private ActionResult LogErrorAndSendResponseByStatusCode(string message, Exception e, int statusCode)
         {
-            _logger.LogError("Error while checking the input");
+            
             _logger.LogError(e.Message);
             return StatusCode(statusCode, new ErrorMessage() { message = e.Message });
         }

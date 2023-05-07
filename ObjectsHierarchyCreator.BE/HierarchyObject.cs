@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ObjectsHierarchyCreator.BE
 {
+    /*
+ Represents an object inside of the hierarchy, meaning an output object.
+ */
     public class HierarchyObject
     {
 
@@ -30,7 +33,5 @@ namespace ObjectsHierarchyCreator.BE
         {
             Children.Add(child);
         }
-
-       
     }
 }

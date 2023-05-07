@@ -9,9 +9,13 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
+using System.ComponentModel.DataAnnotations;
 
 namespace ObjectsHierarchyCreator.BE
 {
+/*
+Represents the objects as entities, meaning the input objects.
+*/
     public class ObjectEntity
     {
 
@@ -20,6 +24,7 @@ namespace ObjectsHierarchyCreator.BE
         private int _id;
 
         [JsonPropertyName("id")]
+        [Required(ErrorMessage = "Missing 'id' field")]
         public int Id
         {
             get { return _id; }
@@ -32,11 +37,13 @@ namespace ObjectsHierarchyCreator.BE
         }
 
         [JsonPropertyName("name")]
+        [Required(ErrorMessage = "Missing 'name' field")]
         public string Name { get; set; }
 
         private int _parentId;
 
         [JsonPropertyName("parent")]
+        [Required(ErrorMessage = "Missing 'parent' field")]
         public int? ParentId
         {
             get
@@ -75,6 +82,10 @@ namespace ObjectsHierarchyCreator.BE
             catch (JsonException e)
             {
                 throw new InvalidInputException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new JsonException($"An error occurred while deserializing the request body: {e.Message}");
             }
 
 
