@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ObjectsHierarchyCreator.BE;
 using ObjectsHierarchyCreator.BL;
-using ObjectsHierarchyCreator.PL.Utils;
+using ObjectsHierarchyCreator.PL.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,16 @@ using System.Threading.Tasks;
 namespace ObjectsHierarchyCreator.PL.Controllers
 {
 
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ObjectsHierarchyCreatorController : ControllerBase
+    public class ObjectsHierarchyCreatorController : CustomController
     {
         private readonly IObjectEntitiesService _objectEntitiesService;
         private readonly ILogger<ObjectsHierarchyCreatorController> _logger;
 
         public ObjectsHierarchyCreatorController(IObjectEntitiesService objectEntitiesService, ILogger<ObjectsHierarchyCreatorController> logger)
+            : base(logger)
         {
             _objectEntitiesService = objectEntitiesService;
             _logger = logger;
@@ -37,7 +40,7 @@ namespace ObjectsHierarchyCreator.PL.Controllers
             try
             {
                 _logger.LogInformation("Started creating the objects hierarchy...");
-                if(objects.Count == 0)
+                if (objects.Count == 0)
                 {
                     _logger.LogWarning($"There are no objects in the hierarchy. Sending response: []");
                     return Ok(new List<HierarchyObject>());
@@ -54,25 +57,18 @@ namespace ObjectsHierarchyCreator.PL.Controllers
             }
             catch (InvalidInputException e)
             {
-                _logger.LogError("Error while checking the input");
-                return LogErrorAndSendResponseByStatusCode("Error while checking the input", e, StatusCodes.Status400BadRequest);
+                return LogErrorAndSendResponseByStatusCode(e, StatusCodes.Status400BadRequest);
             }
             catch (DALException e)
             {
-                return LogErrorAndSendResponseByStatusCode("Error while doing a data access operation", e, StatusCodes.Status500InternalServerError);
+                return LogErrorAndSendResponseByStatusCode(e, StatusCodes.Status500InternalServerError);
             }
             catch (Exception e)
             {
-                return LogErrorAndSendResponseByStatusCode("An error occurred while creating the objects hierarchy", e, StatusCodes.Status500InternalServerError);
+                return LogErrorAndSendResponseByStatusCode(e, StatusCodes.Status500InternalServerError);
             }
 
         }
 
-        private ActionResult LogErrorAndSendResponseByStatusCode(string message, Exception e, int statusCode)
-        {
-            
-            _logger.LogError(e.Message);
-            return StatusCode(statusCode, new ErrorMessage() { message = e.Message });
-        }
     }
 }

@@ -32,4 +32,12 @@ namespace ObjectsHierarchyCreator.BE
         }
     }
 
+    public class BLException : ObjectsHierarchyCreatorException
+    {
+        public BLException(string message)
+            : base($"Business layer error: {message}")
+        {
+        }
+    }
+
 }

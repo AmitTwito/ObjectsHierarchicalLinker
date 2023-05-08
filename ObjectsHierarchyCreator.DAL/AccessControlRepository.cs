@@ -1,4 +1,5 @@
-﻿using ObjectsHierarchyCreator.BE.AccessControl;
+﻿using ObjectsHierarchyCreator.BE;
+using ObjectsHierarchyCreator.BE.AccessControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ObjectsHierarchyCreator.DAL
 {
     public class AccessControlRepository : IAccessControlRepository
     {
-        private List<User> _users = new() { new User() { Password = "123" } };
+        private List<User> _users = new() { new User() { Username = "admin", Password = "123" } };
 
 
         public List<User> GetAllUsers()
@@ -19,7 +20,15 @@ namespace ObjectsHierarchyCreator.DAL
 
         public User GetUserByCredentials(AuthRequest authRequest)
         {
-            return _users.Where(u => u.Username == authRequest.Username && u.Password == authRequest.Password).FirstOrDefault();
+            try
+            {
+                return _users.Where(u => u.Username == authRequest.Username && u.Password == authRequest.Password).FirstOrDefault();
+
+            }
+            catch (Exception e)
+            {
+                throw new DALException($"Error at GetUserByCredentials. '{e.Message}'");
+            }
         }
     }
 }

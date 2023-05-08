@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
+using ObjectsHierarchyCreator.BE;
 using ObjectsHierarchyCreator.BE.AccessControl;
-using ObjectsHierarchyCreator.BE.Utils;
+using ObjectsHierarchyCreator.BE.Utilities;
 using ObjectsHierarchyCreator.DAL;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,9 @@ namespace ObjectsHierarchyCreator.BL
         }
 
 
-        public Token GetToken(AuthRequest request)
+        public Token AuthenticateAndGetToken(AuthRequest request)
         {
+
             var user = _accessControlRepo.GetUserByCredentials(request);
 
             return user == null ? null : new Token { AccessToken = GenerateTokenString(user) };
@@ -43,20 +45,28 @@ namespace ObjectsHierarchyCreator.BL
 
         private string GenerateTokenString(User user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenKey = Encoding.ASCII.GetBytes(_config.JWTKey);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            try
             {
-                Subject = new ClaimsIdentity(new Claim[]
-              {
-             new Claim(ClaimTypes.Name, user.Username)
-              }),
-                Expires = DateTime.UtcNow.AddMinutes(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenKey = Encoding.ASCII.GetBytes(_config.JWTKey);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                  {
+                    new Claim(ClaimTypes.Name, user.Username)
+                  }),
+                    Expires = DateTime.UtcNow.AddMinutes(10),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
+                return tokenHandler.WriteToken(token);
+            }
+            catch (Exception e)
+            {
+                throw new BLException($"Problem at Access Control BL - GenerateTokenString. {e.Message}");
+            }
+
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ObjectsHierarchyCreator.BE.Utils
+﻿namespace ObjectsHierarchyCreator.BE.Utilities
 {
     public class AppConfig
     {

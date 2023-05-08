@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace ObjectsHierarchyCreator.BE.AccessControl
 {
     public class Token
     {
+        [JsonProperty("access_token")]
         public string AccessToken { get; set; }
 
     }

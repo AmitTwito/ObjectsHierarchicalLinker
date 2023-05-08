@@ -11,6 +11,6 @@ namespace ObjectsHierarchyCreator.BL
     {
 
         List<User> GetAllUsers();
-        Token GetToken(AuthRequest request);
+        Token AuthenticateAndGetToken(AuthRequest request);
     }
 }

@@ -9,7 +9,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ObjectsHierarchyCreator.PL.Utils
+namespace ObjectsHierarchyCreator.PL.Utilities
 {
     public class JsonSerializationMiddleware
     {
@@ -36,7 +36,7 @@ namespace ObjectsHierarchyCreator.PL.Utils
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 context.Response.ContentType = "application/json";
 
-                var error = new ErrorMessage { message = errorMessage };
+                var error = new ErrorMessage { Message = errorMessage };
                 var json = JsonConvert.SerializeObject(error);
 
                 await context.Response.WriteAsync(json);

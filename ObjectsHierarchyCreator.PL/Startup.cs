@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ObjectsHierarchyCreator.BL;
 using ObjectsHierarchyCreator.DAL;
-using ObjectsHierarchyCreator.PL.Utils;
+using ObjectsHierarchyCreator.PL.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,12 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ObjectsHierarchyCreator.BE;
 using Microsoft.Extensions.Logging.Console;
-using ObjectsHierarchyCreator.BE.Utils;
+using ObjectsHierarchyCreator.BE.Utilities;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Runtime;
+using Microsoft.Extensions.Options;
 
 namespace ObjectsHierarchyCreator.PL
 {
@@ -46,7 +51,7 @@ namespace ObjectsHierarchyCreator.PL
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                var Key = Encoding.UTF8.GetBytes(Configuration["JWT:Key"]);
+                var Key = Encoding.ASCII.GetBytes(Configuration["AppConfig:JWTKey"]);
                 o.SaveToken = true;
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -54,7 +59,7 @@ namespace ObjectsHierarchyCreator.PL
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                   
+
                     IssuerSigningKey = new SymmetricSecurityKey(Key)
                 };
             });
@@ -71,6 +76,30 @@ namespace ObjectsHierarchyCreator.PL
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ObjectsHierarchyCreator", Version = "v1" });
+                c.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                            Reference = new OpenApiReference
+                            {
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
