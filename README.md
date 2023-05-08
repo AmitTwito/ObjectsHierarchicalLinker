@@ -19,7 +19,7 @@ For the authentication functionality, JWT needs a secret key. You can set your o
 
 ## Auth
 In the swagger, first use the ```api/auth/token``` method. The body is an object with 'username' and 'password'. For this simple purpose you can use 'admin' and '123'.
-You can add more ```User``` objets in the file ```AccessControlRepository.cs``` file under ```ObjectsHierarchyCreator.DAL```.
+You can add more ```User``` objects in the file ```AccessControlRepository.cs``` file under ```ObjectsHierarchyCreator.DAL``` (with unique usernames).
 Then, take the token from the response and click on ```Authorize``` button in the top right corner in swagger, and enter 'Bearer TOKEN' in the value field.
 Also, the token is set to be expired after 10 minutes
 
