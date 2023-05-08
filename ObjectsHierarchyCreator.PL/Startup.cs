@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ObjectsHierarchyCreator.BL;
 using ObjectsHierarchyCreator.DAL;
-using ObjectsHierarchyCreator.PL.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Runtime;
 using Microsoft.Extensions.Options;
+using ObjectsHierarchyCreator.PL.Utilities.Middlewares;
 
 namespace ObjectsHierarchyCreator.PL
 {
@@ -44,25 +44,6 @@ namespace ObjectsHierarchyCreator.PL
              {
                  options.JsonSerializerOptions.Converters.Add(new ObjectEntitiesConverter());
              });
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                var Key = Encoding.ASCII.GetBytes(Configuration["AppConfig:JWTKey"]);
-                o.SaveToken = true;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-
-                    IssuerSigningKey = new SymmetricSecurityKey(Key)
-                };
-            });
 
             services.AddOptions();
 
@@ -115,7 +96,8 @@ namespace ObjectsHierarchyCreator.PL
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ObjectsHierarchyCreator v1"));
             }
 
-            app.UseMiddleware<JsonSerializationMiddleware>();
+            app.UseMiddleware<AuthenticationMiddleware>();
+            app.UseMiddleware<JsonSerializationErrorCatcherMiddleware>();
 
             app.UseRouting();
 

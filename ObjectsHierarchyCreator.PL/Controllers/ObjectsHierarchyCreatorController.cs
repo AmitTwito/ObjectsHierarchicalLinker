@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace ObjectsHierarchyCreator.PL.Controllers
 {
 
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class ObjectsHierarchyCreatorController : CustomController
@@ -30,6 +30,7 @@ namespace ObjectsHierarchyCreator.PL.Controllers
         }
 
         // GET: api/<ObjectsHierarchicalLinkerController>
+        [AuthorizeFilter]
         [HttpPost]
         [ProducesResponseType(typeof(List<HierarchyObject>), 200)]
         [ProducesResponseType(typeof(ErrorMessage), 400)]

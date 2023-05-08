@@ -29,9 +29,6 @@ namespace ObjectsHierarchyCreator.BE
         {
             Children = new List<HierarchyObject>();
         }
-        public void AddChild(HierarchyObject child)
-        {
-            Children.Add(child);
-        }
+        
     }
 }

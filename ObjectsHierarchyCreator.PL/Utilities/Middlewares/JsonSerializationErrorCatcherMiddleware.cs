@@ -9,14 +9,14 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ObjectsHierarchyCreator.PL.Utilities
+namespace ObjectsHierarchyCreator.PL.Utilities.Middlewares
 {
-    public class JsonSerializationMiddleware
+    public class JsonSerializationErrorCatcherMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<JsonSerializationMiddleware> _logger;
+        private readonly ILogger<JsonSerializationErrorCatcherMiddleware> _logger;
 
-        public JsonSerializationMiddleware(RequestDelegate next, ILogger<JsonSerializationMiddleware> logger)
+        public JsonSerializationErrorCatcherMiddleware(RequestDelegate next, ILogger<JsonSerializationErrorCatcherMiddleware> logger)
         {
             _next = next;
             _logger = logger;
@@ -28,7 +28,6 @@ namespace ObjectsHierarchyCreator.PL.Utilities
             {
                 await _next(context);
             }
-          
             catch (Exception ex)
             {
                 var errorMessage = ex.Message;

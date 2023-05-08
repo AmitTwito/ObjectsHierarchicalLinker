@@ -34,7 +34,7 @@ namespace ObjectsHierarchyCreator.BL
                 var hierarchyObject = idToHierarchyObject[objectEntity.Id];
                 var children = this._objectEntitiesRepo.GetChildrenByParentId(objectEntity.Id);
                 foreach (var child in children)
-                    hierarchyObject.AddChild(idToHierarchyObject[child.Id]);
+                    hierarchyObject.Children.Add(idToHierarchyObject[child.Id]);
                 if (objectEntity.ParentId == ObjectEntity.NoParentIdValue)
                     objectHierarchy.AddObject(hierarchyObject);
             }
