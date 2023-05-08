@@ -1,0 +1,36 @@
+[{
+"id": 1,
+"name": "david",
+"parent": null
+},
+{
+"id": 2,
+"name": "tom",
+"parent": 1
+},
+{
+"id": 3,
+"name": "tami",
+"parent": 1
+},
+{
+"id": 4,
+"name": "gal",
+"parent": 1
+},
+{
+"id": 5,
+"name": "uri",
+"parent": 4
+},
+{
+"id": 6,
+"name": "uri",
+"parent": 3
+},
+{
+"id": 7,
+"name": "adi",
+"parent": 5
+}
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "david",
+    "childs": [
+      {
+        "id": 2,
+        "name": "tom",
+        "childs": []
+      },
+      {
+        "id": 3,
+        "name": "tami",
+        "childs": [
+          {
+            "id": 6,
+            "name": "uri",
+            "childs": []
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "gal",
+        "childs": [
+          {
+            "id": 5,
+            "name": "uri",
+            "childs": [
+              {
+                "id": 7,
+                "name": "adi",
+                "childs": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
