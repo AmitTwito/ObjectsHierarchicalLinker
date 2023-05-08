@@ -52,7 +52,7 @@ namespace ObjectsHierarchyCreator.PL.Controllers
                 });
 
                 _logger.LogInformation($"Successfully created the objects hierarchy, sending response: \n{hierarchy.ToJsonString()}");
-                return Ok(hierarchy.Objects);
+                return Ok(hierarchy.Ancestors);
             }
             catch (InvalidInputException e)
             {

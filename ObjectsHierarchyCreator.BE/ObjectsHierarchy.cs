@@ -9,27 +9,27 @@ using System.Threading.Tasks;
 
 namespace ObjectsHierarchyCreator.BE
 {
-/*
- Represents the hierarchy of the objects.
- */
+    /*
+     Represents the hierarchy of the objects.
+     */
     public class ObjectsHierarchy
     {
-        public List<HierarchyObject> Objects { get; }
+        public List<HierarchyObject> Ancestors { get; }
 
         public ObjectsHierarchy()
         {
-            Objects = new List<HierarchyObject>();
+            Ancestors = new List<HierarchyObject>();
         }
 
         public void AddObject(HierarchyObject hierarchyObject)
         {
-            this.Objects.Add(hierarchyObject);
+            this.Ancestors.Add(hierarchyObject);
         }
         public string ToJsonString()
         {
             var options = new JsonSerializerOptions();
             options.WriteIndented = true;
-            return JsonSerializer.Serialize(Objects, options);
+            return JsonSerializer.Serialize(Ancestors, options);
         }
 
     }
