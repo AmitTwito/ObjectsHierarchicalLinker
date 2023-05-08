@@ -9,7 +9,7 @@ A simple C# .NET 5 WebApi simple backend service that gets a list of objects wit
 - Clone the repo
 - Open cmd and ```cd``` into the repo'ss folder
 - In the cmd, run ```dotnet build``` and wait for it to finish
-- Then, run '''cd ObjectsHierarchyCreator.PL'''
+- Then, run ```cd ObjectsHierarchyCreator.PL```
 - run ```dotnet run```
 - The port will be displayed in the cmd logs. On default it is 5000
 - Open the browser and go to ```http://localhost:<port>/swagger```
