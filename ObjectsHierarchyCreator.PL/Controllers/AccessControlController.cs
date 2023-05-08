@@ -44,7 +44,7 @@ namespace ObjectsHierarchyCreator.PL.Controllers
 
                 if (token == null)
                 {
-                    _logger.LogWarning($"Failed authentication attempt with '{request.Username}. Incorrect username or password.");
+                    _logger.LogWarning($"Failed authentication attempt with '{request.Username}'. Incorrect username or password.");
                     return Unauthorized(new ErrorMessage { Message = "Invalid username or password" });
                 }
 

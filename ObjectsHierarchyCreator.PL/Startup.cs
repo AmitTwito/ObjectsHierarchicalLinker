@@ -79,7 +79,7 @@ namespace ObjectsHierarchyCreator.PL
                 c.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
-                    Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+                    Description = "Enter the Bearer Authorization string as following: `Bearer <TOKEN>`",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
