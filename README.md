@@ -7,7 +7,7 @@ A simple C# .NET 5 WebApi simple backend service that gets a list of objects wit
 
 ## How to run:
 - Clone the repo
-- Open cmd and ```cd``` into the repo'ss folder
+- Open cmd and ```cd``` into the repo's folder
 - In the cmd, run ```dotnet build``` and wait for it to finish
 - Then, run ```cd ObjectsHierarchyCreator.PL```
 - run ```dotnet run```
