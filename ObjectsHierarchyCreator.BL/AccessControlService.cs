@@ -34,7 +34,7 @@ namespace ObjectsHierarchyCreator.BL
         }
 
 
-        public Token AuthenticateAndGetToken(AuthRequest request)
+        public Token GetAccessToken(AuthRequest request)
         {
 
             var user = _accessControlRepo.GetUserByCredentials(request);

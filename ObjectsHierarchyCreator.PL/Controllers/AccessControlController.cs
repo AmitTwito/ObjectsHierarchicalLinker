@@ -31,15 +31,15 @@ namespace ObjectsHierarchyCreator.PL.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("~/api/auth")]
-        public async Task<ActionResult> AuthenticateAndGetAccessToken(AuthRequest request)
+        [HttpPost("~/api/auth/token")]
+        public async Task<ActionResult> GetAccessToken(AuthRequest request)
         {
             _logger.LogInformation($"Authentication attempt with username '{request.Username}'. Generating access token...");
             try
             {
                 var token = await Task.Run(() =>
                 {
-                    return _accessControlService.AuthenticateAndGetToken(request);
+                    return _accessControlService.GetAccessToken(request);
                 });
 
                 if (token == null)
