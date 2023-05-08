@@ -5,3 +5,7 @@ A simple C# .NET 5 WebApi simple backend service that gets a list of objects wit
 
 
 
+How to run:
+- Clone the repo
+- ```cd ObjectsHierarchyCreator.PL```
+- 
