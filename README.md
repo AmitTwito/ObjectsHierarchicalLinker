@@ -30,4 +30,4 @@ In the swagger, use the ```api/ObjectsHierarchyCreator``` post method. See the `
 - ```parent``` is the id of the object's parent. if it has no parent, it can be either ```null``` or 0.
   
 - No duplicates id's are alowed.
-- If object has parent id X, an object with id X needs to be exist in the least.
+- If object has parent id X, an object with id X needs to be exist in the list.
