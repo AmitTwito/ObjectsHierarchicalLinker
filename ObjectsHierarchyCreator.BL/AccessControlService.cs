@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using ObjectsHierarchyCreator.BE;
 using ObjectsHierarchyCreator.BE.AccessControl;
 using ObjectsHierarchyCreator.BE.Utilities;
@@ -8,11 +7,8 @@ using ObjectsHierarchyCreator.DAL;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ObjectsHierarchyCreator.BL
 {
@@ -36,7 +32,6 @@ namespace ObjectsHierarchyCreator.BL
 
         public Token GetAccessToken(AuthRequest request)
         {
-
             var user = _accessControlRepo.GetUserByCredentials(request);
 
             return user == null ? null : new Token { AccessToken = GenerateTokenString(user) };
