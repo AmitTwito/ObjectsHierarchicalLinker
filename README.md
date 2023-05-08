@@ -21,3 +21,5 @@ For the authentication functionality, you can set you own secret key - open the 
 In the swagger, first use the ```/api/auth/token``` method. The body is an object with 'username' and 'password'. For this simple purpose you can use 'admin' and '123'.
 You can add more ```User``` objets in the file ```AccessControlRepository.cs``` file under ```ObjectsHierarchyCreator.DAL```.
 Then, take the token from the response and click on ```Authorize``` button in the top right corner in swagger, and enter 'Bearer <TOKEN>' in the value field.
+
+## Get Objects Hierarchy
