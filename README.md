@@ -15,7 +15,7 @@ A simple C# .NET 5 WebApi simple backend service that gets a list of objects wit
 - Open the browser and go to ```http://localhost:<port>/swagger```
 
 ## JWT secret key
-For the authentication functionality, you can set you own secret key - open the ```appsettings.json``` in ```ObjectsHierarchyCreator.PL``` and set the JWTKey as needed.
+For the authentication functionality, JWT needs a secret key. You can set your own secret key - open the ```appsettings.json``` in ```ObjectsHierarchyCreator.PL``` and set the JWTKey as needed.
 
 ## Auth
 In the swagger, first use the ```api/auth/token``` method. The body is an object with 'username' and 'password'. For this simple purpose you can use 'admin' and '123'.
